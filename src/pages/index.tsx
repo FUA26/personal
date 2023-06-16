@@ -8,7 +8,7 @@ import PostCard from '@/components/PostCard';
 
 
 
-export default function Home({posts}) {
+export default function Home({posts} : any) {
   const [text] = useTypewriter({
     words: ['Frontend Developer', 'Fullstack Developer', 'Project Manager'],
     loop: true,

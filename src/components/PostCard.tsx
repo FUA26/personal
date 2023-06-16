@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-function PostCard({ title, publishedAt, description, slug,banner }) {
+function PostCard({ title, publishedAt, description, slug,banner }: any) {
   return (
     // <div className="my-4 py-4 border-b">
     //   <h2 className="font-bold text-2xl my-4">{title}</h2>

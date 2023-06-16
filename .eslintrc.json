@@ -25,7 +25,6 @@
         "plugin:tailwindcss/recommended",
         "airbnb-base",
         "plugin:prettier/recommended",
-        "prettier/@typescript-eslint"
       ],
       "parserOptions": {
         "project": "./tsconfig.json"

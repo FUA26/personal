@@ -17,7 +17,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }: any) => {
-  const post = await getPost('project',params.slug);
+  const post = await getPost('project', params.slug);
   const mdxSource = await serialize(post.content);
   return {
     props: {

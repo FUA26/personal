@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const getPost = (type,slug) => {
+const getPost = (type: string, slug: any) => {
   const fileContents = fs.readFileSync(
     path.join(`contents/${type}/${slug}.mdx`),
     'utf8'
