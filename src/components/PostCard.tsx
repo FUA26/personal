@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-function PostCard({ title, publishedAt, description, slug }) {
+function PostCard({ title, publishedAt, description, slug,banner }) {
   return (
     // <div className="my-4 py-4 border-b">
     //   <h2 className="font-bold text-2xl my-4">{title}</h2>
@@ -12,12 +12,12 @@ function PostCard({ title, publishedAt, description, slug }) {
     //   </Link>
     // </div>
     <article className="m-4 flex flex-col rounded-lg shadow dark:bg-gray-800">
-      <Link href={`/blog/${slug}`} as={`/blog/${slug}`}>
+      <Link href={`/project/${slug}`} as={`/project/${slug}`}>
         <div className="">
           <img
             alt=""
             className="h-52 w-full rounded-lg object-cover dark:bg-gray-500"
-            src="https://source.unsplash.com/400x400/?computer?1"
+            src={`/content/${banner}`}
           />
           <div className="p-4">
             <p className="font-primary text-base font-bold md:text-lg">

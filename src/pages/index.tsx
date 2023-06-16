@@ -3,13 +3,19 @@ import { useTypewriter } from 'react-simple-typewriter';
 
 import Layout from '@/components/layout/Layout';
 import Logo from '@/components/Logo';
+import getPosts from '@/libs/contents';
+import PostCard from '@/components/PostCard';
 
-export default function Home() {
+
+
+export default function Home({posts}) {
   const [text] = useTypewriter({
     words: ['Frontend Developer', 'Fullstack Developer', 'Project Manager'],
     loop: true,
     delaySpeed: 2000,
   });
+
+
   return (
     <Layout>
       <div className="flex min-h-screen flex-col pb-16 pt-20 sm:flex-row  lg:pt-32">
@@ -67,6 +73,39 @@ export default function Home() {
           </p>
         </div>
       </div>
+      <div className="py-6">
+        <div className="px-6">
+          <h2 className="font-display text-2xl md:text-4xl  font-bold text-fuaprimary-600 dark:text-fuasecondary-400 sm:text-4xl pt-6 pb-2">
+            Featured Posts
+          </h2>
+          <p className="w-1/2 ">
+            Sharing Knowledge, Tips, and Tutorials to Fuel Your Passion for Web
+            Development
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {posts.map((post : any) => (
+            <PostCard
+              key={post.slug}
+              title={post.data.title}
+              publishedAt={post.data.publishedAt}
+              description={post.data.description}
+              slug={post.slug}
+              banner= {post.data.banner}
+            />
+          ))}
+        </div>
+      </div>
     </Layout>
   );
 }
+
+export const getStaticProps = () => {
+  const posts = getPosts('project');
+  return {
+    props: {
+      posts,
+    },
+  };
+};

@@ -23,8 +23,7 @@
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
         "plugin:tailwindcss/recommended",
-        "airbnb",
-        "airbnb/hooks",
+        "airbnb-base",
         "plugin:prettier/recommended",
         "prettier/@typescript-eslint"
       ],

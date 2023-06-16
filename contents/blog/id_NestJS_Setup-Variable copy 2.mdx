@@ -1,0 +1,101 @@
+---
+title: 'Nest.js Setup Variables'
+publishedAt: '2023-05-13'
+description: 'Langkah awal setup NestJs.'
+banner: 'luca-bravo-XJXWbfSo2f0-unsplash'
+tags: 'nestjs'
+---
+
+# Configuration Variable
+
+Langkah selanjutnya adalah melakukan setup Environment dengan menginstal dependency yang diperlukan. Perlu diingat bahwa `@nestjs/config` hanya dapat berjalan pada TypeScript 4.1 atau versi lebih baru.
+
+```
+npm i --save @nestjs/config
+```
+
+Setelah instalasi selesai, kita bisa menggunakan `ConfigModule`. Biasanya, kita menggunakannya di `AppModule` dan mengatur perilakunya dengan `.forRoot()`. Di sini, variabel lingkungan diparsing dan dipecahkan.
+
+```jsx
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [ConfigModule.forRoot()],
+})
+export class AppModule {}
+```
+
+Untuk mengatur konfigurasi, buatlah folder baru bernama "config" di dalam folder "src". Di dalam folder tersebut, buatlah dua file baru: "config.type.ts" dan "app.config.ts". File "config.type.ts" digunakan untuk mendefinisikan jenis konfigurasi yang akan digunakan, sedangkan file "app.config.ts" berisi konfigurasi aktual yang digunakan dalam aplikasi. Jangan lupa untuk mengisi kedua file tersebut dengan konfigurasi yang sesuai dengan kebutuhan aplikasi Anda.
+
+```tsx
+#config.type.ts;
+export type AppConfig = {
+  nodeEnv: string;
+  name: string;
+  workingDirectory: string;
+  frontendDomain?: string;
+  backendDomain: string;
+  port: number;
+  apiPrefix: string;
+};
+```
+
+```tsx
+#app.config.ts;
+import { registerAs } from '@nestjs/config';
+import { AppConfig } from './config.type';
+
+export default registerAs<AppConfig>('app', () => ({
+  nodeEnv: process.env.NODE_ENV || 'development',
+  name: process.env.APP_NAME || 'app',
+  workingDirectory: process.env.PWD || process.cwd(),
+  frontendDomain: process.env.FRONTEND_DOMAIN,
+  backendDomain: process.env.BACKEND_DOMAIN ?? 'http://localhost',
+  port: process.env.APP_PORT
+    ? parseInt(process.env.APP_PORT, 10)
+    : process.env.PORT
+    ? parseInt(process.env.PORT, 10)
+    : 3000,
+  apiPrefix: process.env.API_PREFIX || 'api',
+}));
+```
+
+Untuk memperbarui `app.modul.ts`, tambahkan konfigurasi baru pada bagian `load`.
+
+```tsx
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import appConfig from './config/app.config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [appConfig],
+      envFilePath: ['.env'],
+    }),
+  ],
+  controllers: [],
+  providers: [],
+})
+export class AppModule {}
+```
+
+Contoh penggunaan pada main.ts
+
+```tsx
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { AllConfigType } from './config/config.type';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService) as ConfigService<AllConfigType>;
+  await app.listen(configService.get('app.port', { infer: true }));
+}
+bootstrap();
+```
+
+`infer:true` digunakan untuk menyimpulkan tipe properti berdasarkan Interface atau Type
