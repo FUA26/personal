@@ -6,6 +6,7 @@ import { InferGetStaticPropsType } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
 
 import { serialize } from 'next-mdx-remote/serialize';
+import Image from 'next/image';
 
 export const getStaticPaths = async () => {
   const posts = await getPosts('project');
@@ -34,9 +35,20 @@ function Post({
   return (
     <Layout>
       <div>
-        <h1 className="font-bold text-7xl mt-24 mb-12">{data.title}</h1>
-        <time className="text-gray-500 italic">{data.date}</time>
-        <div className="prose mt-12">
+        <div className="relative">
+          <Image
+            src={`/content/${data.banner}`}
+            width={1200}
+            height={(1200 * 2) / 5}
+            aspect={{ height: 2, width: 5 }}
+            alt="benner"
+          />
+        </div>
+        <div className="m-3">
+          <h1 className="font-bold text-4xl">{data.title}</h1>
+          <time className="text-gray-500 italic">{data.publishedAt}</time>
+        </div>
+        <div className="m-3 w-full prose mt-12 dark:prose-invert">
           <MDXRemote {...content} />
         </div>
       </div>
