@@ -40,7 +40,6 @@ function Post({
             src={`/content/${data.banner}`}
             width={1200}
             height={(1200 * 2) / 5}
-            aspect={{ height: 2, width: 5 }}
             alt="benner"
           />
         </div>
